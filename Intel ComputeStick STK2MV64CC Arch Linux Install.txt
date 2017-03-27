@@ -29,8 +29,7 @@ Intel ComputeStick STK2MV64CC Arch Linux Install
 		i)	{wireless_interface} should be replaced with the name of your wireless interface
 	
 	f)	ping google.com
-	
-	i)	Test to make sure that your device now has access to the Internet & can resolve hostnames
+		i)	Test to make sure that your device now has access to the Internet & can resolve hostnames
 	
 	g)	lsblk
 		i)	Get the device name for your mmc storage media
@@ -66,176 +65,138 @@ Intel ComputeStick STK2MV64CC Arch Linux Install
 				(b)	Name = home
 				(c)	Code = 8300
 	
-	j)	reboot
-
-3)	At [root@archiso ~]# prompt
-	
-	a)	ip link
-		i)	Get interface name for the wireless interface
-		ii)	The interface name for my device was: 
-			(1)	wlp2s0
-	
-	b)	ip link set {wireless_interface} up
-		i)	{wireless_interface} should be replaced w/ the name of your wireless interface 
-		ii)	set wireless interface to up status
-	
-	c)	wpa_passphrase {SSID} ‘{passphrase}’
-		i)	{SSID} should be replaced by your wireless network’s SSID
-		ii)	Your SSID is case sensitive
-		iii)	{passphrase} should be replaced by the passphrase (aka - pre-shared key, or psk) in use on your wireless network
-		iv)	The single quotes encapsulating your {passphrase} may not be required; however, they were necessary to properly parse the special characters in the passphrase on my wireless network
-		v)	Generate the hash for  {passphrase} on the wireless network w/ SSID {SSID}
-		vi)	This will tell you if the system is capable of properly parsing your {passphrase}
-	
-	d)	wpa_supplicant –B –i {wireless_interface} –c <(wpa_passphrase {SSID} ‘{passphrase}’)
-		i)	{wireless_interface} should be replaced by the name of your wireless interface
-		ii)	{SSID} should be replaced by your wireless network’s SSID
-		iii)	Your SSID is case sensitive
-		iv)	{passphrase} should be replaced by the passphrase (aka - pre-shared key, or psk) in use on your wireless network
-		v)	The single quotes encapsulating your {passphrase} may not be required; however, they were necessary to properly parse the special characters in the passphrase on my wireless network
-	
-	e)	dhcpcd {wireless_interface}
-		i)	{wireless_interface} should be replaced with the name of your wireless interface
-	
-	f)	ping google.com
-		i)	Test to make sure that your device now has access to the Internet & can resolve hostnames
-	
-	g)	lsblk 
+	j)	lsblk 
 		i)	Make sure that the partitions you created appear in the listing & match what you expect to see based on the configuration steps performed above
 	
-	h)	mkfs.fat –F32 /dev/{mmc_storage_device_name_boot_paritition_number}
+	k)	mkfs.fat –F32 /dev/{mmc_storage_device_name_boot_paritition_number}
 		i)	{mmc_storage_device_name_boot_partition_number} should be replaced with the name of your mmc storage device with your boot partition number appended
 		ii)	By following the procedure above, my {mmc_storage_device_name_boot_partition_number} was replaced by mmcblk0p1
 	
-	i)	mkswap /dev/{mmc_storage_device_name_swap_parition_number}
+	l)	mkswap /dev/{mmc_storage_device_name_swap_parition_number}
 		i)	{mmc_storage_device_name_swap_partition_number) should be replaced with the name of your mmc storage device with your swap partition number appended
 		ii)	By following the procedure above, my {mmc_storage_device_name_swap_partition_number} was replaced by mmcblk0p2
 	
-	j)	swapon /dev/{mmc_storage_device_name_swap_parition_number}
+	m)	swapon /dev/{mmc_storage_device_name_swap_parition_number}
 		i)	{mmc_storage_device_name_swap_partition_number) should be replaced with the name of your mmc storage device with your swap partition number appended
 		ii)	By following the procedure above, my {mmc_storage_device_name_swap_partition_number} was replaced by mmcblk0p2
 	
-	k)	mkfs.ext4 /dev/{mmc_storage_device_name_root_partition_number}
+	n)	mkfs.ext4 /dev/{mmc_storage_device_name_root_partition_number}
 		i)	{mmc_storage_device_name_root_partition_number} should be replaced with the name of your mmc storage device with your root partition number appended
 		ii)	By following the procedure above, my {mmc_storage_device_name_root_partition_number} was replaced by mmcblk0p3
 	
-	l)	mkfs.ext4 /dev/{mmc_storage_device_name_home_partition_number}
+	o)	mkfs.ext4 /dev/{mmc_storage_device_name_home_partition_number}
 		i)	{mmc_storage_device_name_home_partition_number} should be replaced with the name of your mmc storage device with your home partition number appended
 		ii)	By following the procedure above, my {mmc_storage_device_name_home_partition_number} was replaced by mmcblk0p4
 	
-	m)	mount /dev/{mmc_storage_device_name_root_partition_number} /mnt
+	p)	mount /dev/{mmc_storage_device_name_root_partition_number} /mnt
 		i)	{mmc_storage_device_name_root_partition_number} should be replaced with the name of your mmc storage device with your root partition number appended
 		ii)	By following the procedure above, my {mmc_storage_device_name_root_partition_number} was replaced by mmcblk0p3
 	
-	n)	mkdir /mnt/root
+	q)	mkdir /mnt/boot
 	
-	o)	mkdir /mnt/home
+	r)	mkdir /mnt/home
 	
-	p)	mount /dev/{mmc_storage_device_name_boot_partition_number}
+	s)	mount /dev/{mmc_storage_device_name_boot_partition_number} /mnt/boot
 		i)	{mmc_storage_device_name_boot_partition_number} should be replaced with the name of your mmc storage device with your boot partition number appended
 		ii)	By following the procedure above, my {mmc_storage_device_name_boot_partition_number} was replaced by mmcblk0p1
 	
-	q)	mount /dev/{mmc_storage_device_name_home_partition_number}
+	t)	mount /dev/{mmc_storage_device_name_home_partition_number} /mnt/home
 		i)	{mmc_storage_device_name_home_partition_number} should be replaced with the name of your mmc storage device with your home partition number appended
 		ii)	By following the procedure above, my {mmc_storage_device_name_home_partition_number} was replaced by mmcblk0p4
 	
-	r)	cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.original
+	u)	cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.original
 	
-	s)	cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
+	v)	cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
 	
-	t)	sed –i ‘s/^#Server/Server/’ /etc/pacman.d/mirrorlist.backup
+	w)	sed –i ‘s/^#Server/Server/’ /etc/pacman.d/mirrorlist.backup
 	
-	u)	rankmirrors –n 6 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist
+	x)	rankmirrors –n 6 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist
 	
-	v)	pacstrap –i /mnt base base-devel
+	y)	pacstrap –i /mnt base base-devel
 		i)	accept defaults & install
 	
-	w)	genfstab –U –p /mnt >> /mnt/etc/fstab
+	z)	genfstab –U –p /mnt >> /mnt/etc/fstab
 	
-	x)	cat /mnt/etc/fstab
+	aa)	cat /mnt/etc/fstab
 		i)	make sure that the output makes sense
 	
-	y)	arch-chroot /mnt
+	bb)	arch-chroot /mnt
 	
-	z)	nano /etc/locale.gen
+	cc)	nano /etc/locale.gen
 		i)	uncomment the line that matches your localization
 		ii)	for me, this was the line for: en_US.UTF-8
 		iii)	save & exit
 	
-	aa)	locale-gen
+	dd)	locale-gen
 	
-	bb)	echo LANG=en_US.UTF-8 > /etc/locale.conf
+	ee)	echo LANG=en_US.UTF-8 > /etc/locale.conf
 	
-	cc)	export LANG=en_US.UTF-8
+	ff)	export LANG=en_US.UTF-8
 	
-	dd)	cd /usr/share/zoneinfo/{country}
+	gg)	cd /usr/share/zoneinfo/{country}
 		i)	{country} should be replaced by your country of residence
 		ii)	For me, {country} was replaced by America
 	
-	ee)	ln –sf /usr/share/zoneinfo/{country}/{city} /etc/localtime
+	hh)	ln –sf /usr/share/zoneinfo/{country}/{city} /etc/localtime
 		i)	{country} should be replaced by your country of residence
 		ii)	For me, {country} was replaced by America
 		iii)	{city} should be replaced by a city in the same timezone in which you live
 		iv)	For me, {city} was replaced by Chicago, for the Central Time Zone
 	
-	ff)	hwclock --systohc
+	ii)	hwclock --systohc
 	
-	gg)	echo {hostname} > /etc/hostname
+	jj)	echo {hostname} > /etc/hostname
 		i)	{hostname} should be replaced by the hostname that you would like your ComputeStick to use when identifying itself on the network
 	
-	hh)	nano /etc/pacman.conf
+	kk)	nano /etc/pacman.conf
 		i)	Uncomment the section for [Multilib]
 			(1)	[Multilib]
 			(2)	Include = /etc/pacman.d/mirrorlist
-		ii)	Add the section for [archlinuxfr] to enable access to AUR 
-			(1)	[archlinuxfr]
-			(2)	SigLevel = Never
-			(3)	Server = http://repo.archlinux.fr/$arch
-		iii)	Save & exit
+		ii)	Save & exit
 	
-	ii)	pacman –Syu
+	ll)	pacman –Syu
 	
-	jj)	passwd
+	mm)	passwd
 		i)	set the password you would like for the root user of your new arch install
 	
-	kk)	useradd –m –g users –G wheel,storage,power –s /bin/bash {user}
+	nn)	useradd –m –g users –G wheel,storage,power –s /bin/bash {user}
 		i)	{user} should be replaced with the username you want as your login account of your new arch install
 			(1)	You can add as many users as needed
 	
-	ll)	passwd {user}
+	oo)	passwd {user}
 		i)	set the password for your login account(s)
 		ii)	{user} should be replaced with the username you created in the previous step
 		iii)	This should be repeated for each user you created if you created more than one login account
 	
-	mm)	EDITOR=nano visudo
+	pp)	EDITOR=nano visudo
 		i)	uncomment the line for %wheel ALL=(ALL) ALL to allow all members of the wheel group to elevate their privileges to root by using sudo
 		ii)	immediately below add the line Defaults rootpw to require members of the wheel group to know the root password to elevate their privileges to root by using sudo
 		iii)	save & quit
 	
-	nn)	mount –t efivarfs efivarfs /sys/firmware/efi/efivars
+	qq)	mount –t efivarfs efivarfs /sys/firmware/efi/efivars
 		i)	this is just to double check to make sure that your efi variables are loaded, confirming that your ComputeStick is configured for EFI boot
 	
-	oo)	bootctl install
+	rr)	bootctl install
 	
-	pp)	blkid PARTUUID –o value /dev/{mmc_storage_device_name_root_partition_number}
+	ss)	blkid -s PARTUUID –o value /dev/{mmc_storage_device_name_root_partition_number}
 		i)	{mmc_storage_device_name_root_partition_number} should be replaced with the name of your mmc storage device with your root partition number appended
 		ii)	By following the procedure above, my {mmc_storage_device_name_root_partition_number} was replaced by mmcblk0p3
 		iii)	Write down the PARTUUID output to the console
 	
-	qq)	pacman –S intel-ucode
+	tt)	pacman –S intel-ucode
 		i)	Accept defaults & install
 	
-	rr)	nano /boot/loader/entries/arch.conf
+	uu)	nano /boot/loader/entries/arch.conf
 		i)	Add the configuration below:
 			(1)	title Arch Linux
 			(2)	linux /vmlinuz-linux
 			(3)	initrd /intel-ucode.img
 			(4)	initrd /initramfs.img
-			(5)	options=PARTUUID={PARTUUID} rw
+			(5)	options root=PARTUUID={PARTUUID} rw
 				(a)	{PARTUUID} should be replaced by the PARTUUID that you wrote down earlier
 	
-	ss)	exit
+	vv)	exit
 		i)	exit the new install
 	
-	tt)	reboot
+	ww)	reboot
 		i)	remove Arch installation media after the OS unloads & before boot
